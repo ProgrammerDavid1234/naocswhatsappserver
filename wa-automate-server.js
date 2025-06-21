@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { create } = require('@open-wa/wa-automate');
+const { executablePath } = require('puppeteer');
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
@@ -12,7 +13,6 @@ async function getGroupId() {
     .single();
 
   if (error) throw new Error("❌ Could not fetch WhatsApp Group ID");
-
   return data.group_id;
 }
 
@@ -39,15 +39,14 @@ async function pollMessages(client, groupId) {
     }
   }
 
-  setTimeout(() => pollMessages(client, groupId), 30000); // every 30 seconds
+  setTimeout(() => pollMessages(client, groupId), 30000);
 }
 
 create({
   headless: true,
   qrTimeout: 0,
   multiDevice: true,
-  // Remove this ↓↓↓ line:
-  // useChrome: true,
+  executablePath: executablePath(), // ✅ Use Puppeteer's bundled Chromium
 }).then(async client => {
   const groupId = await getGroupId();
   console.log('✅ Connected to WhatsApp, using group:', groupId);
