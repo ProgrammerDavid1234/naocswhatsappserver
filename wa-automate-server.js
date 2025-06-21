@@ -43,10 +43,11 @@ async function pollMessages(client, groupId) {
 }
 
 create({
-  useChrome: true,
-  headless: false, // shows Chrome so QR appears
+  headless: true,
   qrTimeout: 0,
-  multiDevice: true
+  multiDevice: true,
+  // Remove this ↓↓↓ line:
+  // useChrome: true,
 }).then(async client => {
   const groupId = await getGroupId();
   console.log('✅ Connected to WhatsApp, using group:', groupId);
