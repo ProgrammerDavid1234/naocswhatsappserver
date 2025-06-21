@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { create } = require('@open-wa/wa-automate');
-const { executablePath } = require('puppeteer');
+const puppeteer = require('puppeteer');
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
@@ -46,7 +46,7 @@ create({
   headless: true,
   qrTimeout: 0,
   multiDevice: true,
-  executablePath: executablePath(), // ✅ Use Puppeteer's bundled Chromium
+  executablePath: puppeteer.executablePath() // ✅ Use bundled Chromium
 }).then(async client => {
   const groupId = await getGroupId();
   console.log('✅ Connected to WhatsApp, using group:', groupId);
