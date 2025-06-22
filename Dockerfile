@@ -4,11 +4,14 @@ FROM ghcr.io/puppeteer/puppeteer:latest
 # Set working directory
 WORKDIR /app
 
-# Copy app files
+# Copy your files
 COPY . .
 
-# Install Node.js dependencies
+# Prevent wa-automate from modifying .gitignore
+ENV WA_NO_IGNORE=true
+
+# Install dependencies
 RUN npm install
 
-# Start your WhatsApp bot
+# Start the bot
 CMD ["npm", "start"]
