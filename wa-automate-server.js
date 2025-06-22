@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { create } = require('@open-wa/wa-automate');
+const { executablePath } = require('puppeteer');
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
@@ -43,11 +44,10 @@ async function pollMessages(client, groupId) {
 }
 
 create({
-  useChrome: true,
-  headless: false, // shows Chrome so QR appears
-  qrTimeout: 0,
+  executablePath: executablePath(),
+  headless: true,
   multiDevice: true,
-  authTimeout: 120000, // wait for 2 minutes
+  authTimeout: 120000,
 }).then(async client => {
   const groupId = await getGroupId();
   console.log('✅ Connected to WhatsApp, using group:', groupId);
